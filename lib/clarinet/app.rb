@@ -15,17 +15,15 @@ module Clarinet
       }
 
       retrieve_access_token
-
-      p @access_token.inspect
-      p @access_token_expires_at.inspect
     end
 
     private
 
       def token
-        retrieve_access_token unless access_token
+        retrieve_access_token unless @access_token
+        retrieve_access_token if @access_token_expires_at < Time.now
 
-        access_token
+        @access_token
       end
 
       def retrieve_access_token
