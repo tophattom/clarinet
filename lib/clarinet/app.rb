@@ -13,8 +13,6 @@ module Clarinet
         username: client_id,
         password: client_secret
       }
-
-      retrieve_access_token
     end
 
     private
