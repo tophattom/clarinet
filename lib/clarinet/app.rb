@@ -15,6 +15,28 @@ module Clarinet
       }
     end
 
+    def predict(urls, model = Clarinet::Model::GENERAL)
+      inputs = urls.map do |url|
+        {
+          data: {
+            image: {
+              url: url
+            }
+          }
+        }
+      end
+
+      response = self.class.post(
+        "/v2/models/#{model}/outputs",
+        headers: auth_header.merge('Content-Type' => 'application/json'),
+        body: { inputs: inputs }.to_json
+      )
+
+      response.parsed_response['outputs'].map do |output|
+        Clarinet::Output.from_api_data output
+      end
+    end
+
     private
 
       def token
