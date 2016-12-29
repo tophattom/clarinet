@@ -1,5 +1,4 @@
 require 'time'
-
 require 'httparty'
 
 module Clarinet
@@ -32,6 +31,12 @@ module Clarinet
         body: { inputs: inputs }.to_json
       )
 
+      data = response.parsed_response
+      status = data['status']
+
+      raise Clarinet::BadRequestFormatError if status['code'] == Clarinet::Status::BAD_REQUEST_FORMAT
+      raise Clarinet::ApiError unless status['code'] == Clarinet::Status::SUCCESS
+
       response.parsed_response['outputs'].map do |output|
         Clarinet::Output.from_api_data output
       end
@@ -56,7 +61,10 @@ module Clarinet
         data = response.parsed_response
         status = data['status']
 
-        @access_token = data['access_token'] if status['code'] == Clarinet::Status::SUCCESS
+        raise Clarinet::InvalidAuthTokenError if status['code'] == Clarinet::Status::INVALID_AUTH_TOKEN
+        raise Clarinet::ApiError unless status['code'] == Clarinet::Status::SUCCESS
+
+        @access_token = data['access_token']
         @access_token_expires_at = Time.now + data['expires_in']
       end
 
