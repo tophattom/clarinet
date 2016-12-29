@@ -32,10 +32,8 @@ module Clarinet
       )
 
       data = response.parsed_response
-      status = data['status']
 
-      raise Clarinet::BadRequestFormatError if status['code'] == Clarinet::Status::BAD_REQUEST_FORMAT
-      raise Clarinet::ApiError unless status['code'] == Clarinet::Status::SUCCESS
+      check_response_status data['status']
 
       response.parsed_response['outputs'].map do |output|
         Clarinet::Output.from_api_data output
@@ -59,10 +57,8 @@ module Clarinet
         )
 
         data = response.parsed_response
-        status = data['status']
 
-        raise Clarinet::InvalidAuthTokenError if status['code'] == Clarinet::Status::INVALID_AUTH_TOKEN
-        raise Clarinet::ApiError unless status['code'] == Clarinet::Status::SUCCESS
+        check_response_status data['status']
 
         @access_token = data['access_token']
         @access_token_expires_at = Time.now + data['expires_in']
@@ -70,6 +66,19 @@ module Clarinet
 
       def auth_header
         { 'Authorization' => "Bearer #{token}" }
+      end
+
+      def check_response_status(status)
+        status_code = status['code']
+
+        return if status_code == Clarinet::Status::SUCCESS
+
+        error_class = Clarinet::ApiError
+        error_class = Clarinet::InvalidAuthTokenError if status_code == Clarinet::Status::INVALID_AUTH_TOKEN
+        error_class = Clarinet::BadRequestFormatError if status_code == Clarinet::Status::BAD_REQUEST_FORMAT
+        error_class = Clarinet::ImageDecodingError if status_code == Clarinet::Status::IMAGE_DECODING_FAILED
+
+        raise error_class, code: status['code'], description: status['description']
       end
 
   end

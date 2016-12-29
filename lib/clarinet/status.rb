@@ -3,5 +3,7 @@ module Clarinet
     SUCCESS = 10000
     INVALID_AUTH_TOKEN = 11001
     BAD_REQUEST_FORMAT = 11100
+
+    IMAGE_DECODING_FAILED = 30300
   end
 end
