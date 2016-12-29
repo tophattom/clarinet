@@ -15,6 +15,8 @@ module Clarinet
     end
 
     def predict(urls, model = Clarinet::Model::GENERAL)
+      urls = [urls] unless urls.is_a? Array
+
       inputs = urls.map do |url|
         {
           data: {
