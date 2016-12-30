@@ -12,6 +12,8 @@ module Clarinet
     WEDDINGS = 'c386b7a870114f4a87477c0824499348'
     COLOR = 'eeed0b6733a644cea07cf4c60f87ebb7'
 
+    MAX_INPUT_COUNT = 128
+
     attr_reader :raw_data
 
     attr_reader :id
@@ -48,17 +50,21 @@ module Clarinet
 
       url = "https://api.clarifai.com/v2/models/#{@id}/outputs"
 
-      response = HTTParty.post(
-        url,
-        headers: @app.auth_header.merge('Content-Type' => 'application/json'),
-        body: { inputs: inputs }.to_json
-      )
+      results = inputs.each_slice(MAX_INPUT_COUNT).map do |inputs_slice|
+        response = HTTParty.post(
+          url,
+          headers: @app.auth_header.merge('Content-Type' => 'application/json'),
+          body: { inputs: inputs_slice }.to_json
+        )
 
-      data = response.parsed_response
+        data = response.parsed_response
 
-      Clarinet::Utils.check_response_status data['status']
+        Clarinet::Utils.check_response_status data['status']
 
-      data
+        data
+      end
+
+      results.flatten
     end
 
   end
