@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/clarinet/version'
 
 Gem::Specification.new do |s|
@@ -9,7 +11,10 @@ Gem::Specification.new do |s|
   s.email = 'jaakko.rf@gmail.com'
   s.homepage = 'https://github.com/tophattom/clarinet'
   s.license = 'ISC'
-  s.files = Dir['{lib}/**/*.rb']
+
+  s.files = `git ls-files`.split("\n")
 
   s.add_dependency 'httparty', ['~> 0.14.0']
+
+  s.add_development_dependency 'bundler', ['~> 1.12']
 end
