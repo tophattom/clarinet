@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'httparty'
+
 module Clarinet
   class Models
     include Enumerable
@@ -29,6 +31,22 @@ module Clarinet
 
     def predict(model, inputs)
       init_model(model).predict(inputs)
+    end
+
+    def list(options = { page: 1, per_page: 20 })
+      url = 'https://api.clarifai.com/v2/models'
+
+      response = HTTParty.get(
+        url,
+        headers: @app.auth_header,
+        query: options
+      )
+
+      data = response.parsed_response
+
+      Clarinet::Utils.check_response_status data['status']
+
+      Clarinet::Models.new @app, data['models']
     end
 
     # Enumerable mixin
