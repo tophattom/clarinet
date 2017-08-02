@@ -33,6 +33,8 @@ module Clarinet
       @created_at = raw_data['created_at'] || raw_data[:created_at]
       @app_id = raw_data['app_id'] || raw_data[:app_id]
       @output_info = raw_data['output_info'] || raw_data[:output_info]
+
+      @model_version = raw_data['model_version'] || raw_data[:model_version]
     end
 
     def predict(inputs)
