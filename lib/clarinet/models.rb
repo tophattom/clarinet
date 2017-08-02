@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'httparty'
-
 module Clarinet
   class Models
     include Enumerable
@@ -38,14 +36,7 @@ module Clarinet
     end
 
     def list(options = { page: 1, per_page: 20 })
-      url = 'https://api.clarifai.com/v2/models'
-
-      response = HTTParty.get(
-        url,
-        headers: @app.auth_header,
-        query: options
-      )
-
+      response = @app.client.models options
       data = response.parsed_response
 
       Clarinet::Utils.check_response_status data['status']
@@ -53,26 +44,24 @@ module Clarinet
       Clarinet::Models.new @app, data['models']
     end
 
-    def search(name, type = nil)
-      url = 'https://api.clarifai.com/v2/models/searches'
-
-      params = {
-        model_query: {
-          name: name,
-          type: type
-        }
-      }
-
-      response = HTTParty.post(
-        url,
-        headers: @app.auth_header.merge('Content-Type' => 'application/json'),
-        body: params.to_json
-      )
-
+    def get(id)
+      response = @app.client.model id
       data = response.parsed_response
 
       Clarinet::Utils.check_response_status data['status']
+      Clarinet::Model.new @app, data['model']
+    end
 
+    def search(name, type = nil)
+      query = {
+        name: name,
+        type: type
+      }
+
+      response = @app.client.models_search query
+      data = response.parsed_response
+
+      Clarinet::Utils.check_response_status data['status']
       Clarinet::Models.new @app, data['models']
     end
 

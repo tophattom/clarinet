@@ -48,15 +48,8 @@ module Clarinet
         }
       end
 
-      url = "https://api.clarifai.com/v2/models/#{@id}/outputs"
-
       results = inputs.each_slice(MAX_INPUT_COUNT).map do |inputs_slice|
-        response = HTTParty.post(
-          url,
-          headers: @app.auth_header.merge('Content-Type' => 'application/json'),
-          body: { inputs: inputs_slice }.to_json
-        )
-
+        response = @app.client.outputs id, inputs_slice
         data = response.parsed_response
 
         Clarinet::Utils.check_response_status data['status']
