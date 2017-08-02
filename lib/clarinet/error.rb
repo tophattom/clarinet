@@ -1,15 +1,15 @@
 module Clarinet
   class ApiError < StandardError
-    attr_reader :code
-    attr_reader :description
-
-    def initialize(opts)
-      @code = opts[:code]
-      @description = opts[:description]
-    end
+    attr_accessor :code
+    attr_accessor :description
+    attr_accessor :details
   end
 
   class InvalidAuthTokenError < Clarinet::ApiError
+
+  end
+
+  class ApiKeyNotFoundError < Clarinet::ApiError
 
   end
 
