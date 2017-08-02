@@ -7,31 +7,50 @@ module Clarinet
     include HTTParty
 
     base_uri 'https://api.clarifai.com/v2'
+    headers 'Content-Type' => 'application/json'
 
     def initialize(api_key)
-      @headers = {
-        'Authorization' => "Key #{api_key}",
-        'Content-Type' => 'application/json'
+      @auth_headers = {
+        'Authorization' => "Key #{api_key}"
       }
     end
 
     def models(options = {})
-      self.class.get '/models', headers: @headers, query: options
+      with_response_parsing do
+        self.class.get '/models', headers: @auth_headers, query: options
+      end
     end
 
     def model(id)
-      self.class.get "/models/#{id}", headers: @headers
+      with_response_parsing do
+        self.class.get "/models/#{id}", headers: @auth_headers
+      end
     end
 
     def models_search(query)
       body = { model_query: query }
-      self.class.post '/models/searches', headers: @headers, body: body.to_json
+
+      with_response_parsing do
+        self.class.post '/models/searches', headers: @auth_headers, body: body.to_json
+      end
     end
 
     def outputs(model_id, inputs)
       body = { inputs: inputs }
-      self.class.post "/models/#{model_id}/outputs", headers: @headers, body: body.to_json
+
+      with_response_parsing do
+        self.class.post "/models/#{model_id}/outputs", headers: @auth_headers, body: body.to_json
+      end
     end
+
+    private
+
+      def with_response_parsing(&block)
+        response = yield
+        data = response.parsed_response
+        Clarinet::Utils.check_response_status data['status']
+        data
+      end
 
   end
 end

@@ -36,19 +36,12 @@ module Clarinet
     end
 
     def list(options = { page: 1, per_page: 20 })
-      response = @app.client.models options
-      data = response.parsed_response
-
-      Clarinet::Utils.check_response_status data['status']
-
+      data = @app.client.models options
       Clarinet::Models.new @app, data['models']
     end
 
     def get(id)
-      response = @app.client.model id
-      data = response.parsed_response
-
-      Clarinet::Utils.check_response_status data['status']
+      data = @app.client.model id
       Clarinet::Model.new @app, data['model']
     end
 
@@ -58,10 +51,7 @@ module Clarinet
         type: type
       }
 
-      response = @app.client.models_search query
-      data = response.parsed_response
-
-      Clarinet::Utils.check_response_status data['status']
+      data = @app.client.models_search query
       Clarinet::Models.new @app, data['models']
     end
 

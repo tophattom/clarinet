@@ -49,12 +49,7 @@ module Clarinet
       end
 
       results = inputs.each_slice(MAX_INPUT_COUNT).map do |inputs_slice|
-        response = @app.client.outputs id, inputs_slice
-        data = response.parsed_response
-
-        Clarinet::Utils.check_response_status data['status']
-
-        data
+        @app.client.outputs id, inputs_slice
       end
 
       results.flatten
