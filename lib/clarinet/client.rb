@@ -43,6 +43,26 @@ module Clarinet
       end
     end
 
+    def concepts(options = {})
+      with_response_parsing do
+        self.class.get '/concepts', headers: @auth_headers, query: options
+      end
+    end
+
+    def concept(id)
+      with_response_parsing do
+        self.class.get "/concepts/#{id}", headers: @auth_headers
+      end
+    end
+
+    def concepts_search(query)
+      body = { concept_query: query }
+
+      with_response_parsing do
+        self.class.post '/concepts/searches', headers: @auth_headers, body: body.to_json
+      end
+    end
+
     private
 
       def with_response_parsing(&block)
