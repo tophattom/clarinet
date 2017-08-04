@@ -63,6 +63,12 @@ module Clarinet
       end
     end
 
+    def input_update(data)
+      with_response_parsing do
+        self.class.patch '/inputs', headers: @auth_headers, body: data.to_json
+      end
+    end
+
     private
 
       def with_response_parsing(&block)
