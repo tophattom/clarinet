@@ -47,7 +47,32 @@ module Clarinet
       @app.client.inputs_status
     end
 
+    def merge_concepts(inputs)
+      update 'merge', inputs
+    end
+
+    def overwrite_concepts(inputs)
+      update 'overwrite', inputs
+    end
+
+    def delete_concepts(inputs)
+      update 'remove', inputs
+    end
+
     private
+
+      def update(action, inputs)
+        inputs = [inputs] unless inputs.is_a? Array
+        inputs = inputs.map { |input| format_input(input) }
+
+        data = {
+          action: action,
+          inputs: inputs
+        }
+
+        response_data = @app.client.inputs_update data
+        Clarinet::Inputs.new @app, response_data['inputs']
+      end
 
       def format_input(input_data, include_image = true)
         input_data = { url: input_data } if input_data.is_a? String
