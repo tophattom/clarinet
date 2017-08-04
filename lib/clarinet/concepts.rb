@@ -4,7 +4,7 @@ module Clarinet
   class Concepts
     extend Forwardable
 
-    delegate [:[], :each, :map] => :@concepts
+    delegate [:[], :each, :map, :find, :select, :reject] => :@concepts
 
     def initialize(app, raw_data = [])
       @app = app

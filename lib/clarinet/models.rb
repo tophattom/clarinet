@@ -2,7 +2,9 @@
 
 module Clarinet
   class Models
-    include Enumerable
+    extend Forwardable
+
+    delegate [:[], :each, :map, :find, :select, :reject] => :@models
 
     attr_reader :raw_data
 
@@ -53,11 +55,6 @@ module Clarinet
 
       data = @app.client.models_search query
       Clarinet::Models.new @app, data['models']
-    end
-
-    # Enumerable mixin
-    def each(&block)
-      @models.each(&block)
     end
 
   end
