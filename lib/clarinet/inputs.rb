@@ -43,6 +43,10 @@ module Clarinet
       Clarinet::Input.new @app, data['input']
     end
 
+    def status
+      @app.client.inputs_status
+    end
+
     private
 
       def format_input(input_data, include_image = true)

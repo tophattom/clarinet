@@ -107,6 +107,12 @@ module Clarinet
       end
     end
 
+    def inputs_status
+      with_response_parsing do
+        self.class.get '/inputs/status', headers: @auth_headers
+      end
+    end
+
 
     private
 
