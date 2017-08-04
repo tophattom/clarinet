@@ -15,6 +15,14 @@ module Clarinet
       end
     end
 
+    def create(concepts)
+      concepts = [concepts] unless concepts.is_a? Array
+      concepts = concepts.map { |concept| format_concept(concept) }
+
+      data = @app.client.concepts.create concepts
+      Clarinet::Concepts.new @app, data['concepts']
+    end
+
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.concepts options
       Clarinet::Concepts.new @app, data['concepts']

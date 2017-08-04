@@ -65,6 +65,14 @@ module Clarinet
       end
     end
 
+    def inputs_create(concepts)
+      body = { concepts: concepts }
+
+      with_response_parsing do
+        self.class.post '/concepts', headers: @auth_headers, body: body.to_json
+      end
+    end
+
     def input_update(data)
       with_response_parsing do
         self.class.patch '/inputs', headers: @auth_headers, body: data.to_json
