@@ -11,8 +11,9 @@ require 'clarinet/concepts'
 require 'clarinet/color'
 require 'clarinet/output'
 require 'clarinet/input'
+require 'clarinet/inputs'
 
-require 'clarinet/models'
 require 'clarinet/model'
+require 'clarinet/models'
 
 require 'clarinet/app'

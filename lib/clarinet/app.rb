@@ -5,12 +5,14 @@ module Clarinet
 
     attr_reader :client
     attr_reader :concepts
+    attr_reader :inputs
     attr_reader :models
 
     def initialize(api_key)
       @client = Clarinet::Client.new api_key
 
       @concepts = Clarinet::Concepts.new self
+      @inputs = Clarinet::Inputs.new self
       @models = Clarinet::Models.new self
     end
 

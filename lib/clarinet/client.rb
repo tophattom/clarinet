@@ -69,6 +69,12 @@ module Clarinet
       end
     end
 
+    def inputs(options = {})
+      with_response_parsing do
+        self.class.get '/inputs', headers: @auth_headers, query: options
+      end
+    end
+
     private
 
       def with_response_parsing(&block)
