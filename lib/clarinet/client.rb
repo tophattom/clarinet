@@ -85,6 +85,29 @@ module Clarinet
       end
     end
 
+    def input_delete(id)
+      with_response_parsing do
+        self.class.delete "/inputs/#{id}", headers: @auth_headers
+      end
+    end
+
+    def inputs_delete(ids)
+      body = { ids: ids }
+
+      with_response_parsing do
+        self.class.delete '/inputs', headers: @auth_headers, body: body.to_json
+      end
+    end
+
+    def inputs_delete_all
+      body = { delete_all: true }
+
+      with_response_parsing do
+        self.class.delete '/inputs', headers: @auth_headers, body: body.to_json
+      end
+    end
+
+
     private
 
       def with_response_parsing(&block)

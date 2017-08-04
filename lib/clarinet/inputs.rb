@@ -24,6 +24,15 @@ module Clarinet
       Clarinet::Inputs.new data['inputs']
     end
 
+    def delete(id)
+      @app.client.input_delete id if id.is_a? String
+      @app.client.inputs_delete id if id.is_a? Array
+    end
+
+    def delete_all
+      @app.client.inputs_delete_all
+    end
+
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.inputs options
       Clarinet::Inputs.new @app, data['inputs']
@@ -59,5 +68,6 @@ module Clarinet
 
         formatted
       end
+
   end
 end
