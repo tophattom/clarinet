@@ -16,6 +16,14 @@ module Clarinet
       end
     end
 
+    def create(inputs)
+      inputs = [inputs] unless inputs.is_a? Array
+      inputs = inputs.map { |input| format_input(input) }
+
+      data = @app.client.inputs_create inputs
+      Clarinet::Inputs.new data['inputs']
+    end
+
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.inputs options
       Clarinet::Inputs.new @app, data['inputs']
@@ -26,5 +34,30 @@ module Clarinet
       Clarinet::Input.new @app, data['input']
     end
 
+    private
+
+      def format_input(input_data, include_image = true)
+        input_data = { url: input_data } if input_data.is_a? String
+
+        formatted = {
+          id: input_data.fetch(:id, nil),
+          data: {}
+        }
+
+        formatted[:data][:concepts] = input_data.concepts if input_data.key? :concepts
+        formatted[:data][:metadata] = input_data.metadata if input_data.key? :metadata
+        formatted[:data][:geo] = { geo_point: input_data.geo } if input_data.key? :geo
+
+        if include_image
+          formatted[:data][:image] = {
+            url: input_data.fetch(:url, nil),
+            base64: input_data.fetch(:base64, nil),
+            crop: input_data.fetch(:crop, nil),
+            allow_duplicate_url: input_data.fetch(:allow_duplicate_url, false)
+          }
+        end
+
+        formatted
+      end
   end
 end

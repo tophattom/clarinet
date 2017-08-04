@@ -12,6 +12,7 @@ module Clarinet
       error_class = Clarinet::InvalidAuthTokenError if status_code == Clarinet::Status::INVALID_AUTH_TOKEN
       error_class = Clarinet::ApiKeyNotFoundError if status_code == Clarinet::Status::API_KEY_NOT_FOUND
       error_class = Clarinet::BadRequestFormatError if status_code == Clarinet::Status::BAD_REQUEST_FORMAT
+      error_class = Clarinet::InvalidRequestError if status_code == Clarinet::Status::INVALID_REQUEST
       error_class = Clarinet::ImageDecodingError if status_code == Clarinet::Status::IMAGE_DECODING_FAILED
 
       new_error = error_class.new status['description']

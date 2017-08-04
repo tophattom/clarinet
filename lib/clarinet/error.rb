@@ -17,6 +17,10 @@ module Clarinet
 
   end
 
+  class InvalidRequestError < Clarinet::ApiError
+
+  end
+
   class ImageDecodingError < Clarinet::ApiError
 
   end

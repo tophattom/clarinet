@@ -9,6 +9,8 @@ module Clarinet
     base_uri 'https://api.clarifai.com/v2'
     headers 'Content-Type' => 'application/json'
 
+    debug_output STDOUT
+
     def initialize(api_key)
       @auth_headers = {
         'Authorization' => "Key #{api_key}"
@@ -72,6 +74,14 @@ module Clarinet
     def inputs(options = {})
       with_response_parsing do
         self.class.get '/inputs', headers: @auth_headers, query: options
+      end
+    end
+
+    def inputs_create(inputs)
+      body = { inputs: inputs }
+
+      with_response_parsing do
+        self.class.post '/inputs', headers: @auth_headers, body: body.to_json
       end
     end
 
