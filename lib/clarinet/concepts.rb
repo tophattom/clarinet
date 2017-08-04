@@ -22,7 +22,7 @@ module Clarinet
 
     def get(id)
       data = @app.client.concept id
-      Clarinet::Model.new data['concept']
+      Clarinet::Concept.new data['concept']
     end
 
     def search(name, language = nil)
