@@ -22,5 +22,38 @@ module Clarinet
       raise new_error
     end
 
+    def self.format_model(model_data)
+      formatted = {
+        id: model_data[:id]
+      }
+
+      formatted[:name] = model_data[:name] if model_data.key? :name
+
+      output_info = {}
+      if model_data.key? :concepts_mutually_exclusive
+        output_info[:output_config] = output_info[:output_config] || {}
+        output_info[:output_config][:concepts_mutually_exclusive] = model_data[:concepts_mutually_exclusive]
+      end
+
+      if model_data.key? :closed_environment
+        output_info[:output_config] = output_info[:output_config] || {}
+        output_info[:output_config][:closed_environment] = model_data[:closed_environment]
+      end
+
+      if model_data.key? :concepts
+        output_info[:data] = {
+          concepts: model_data[:concepts].map { |c| format_concept(c) }
+        }
+      end
+
+      formatted[:output_info] = output_info
+      formatted
+    end
+
+    def self.format_concept(concept_data)
+      return { id: concept_data } if concept_data.is_a? String
+      concept_data
+    end
+
   end
 end

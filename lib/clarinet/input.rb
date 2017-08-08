@@ -55,7 +55,7 @@ module Clarinet
           ]
         }
 
-        response_data = @app.client.input_update data
+        response_data = @app.client.inputs_update data
         Clarinet::Input.new response_data['input']
       end
 

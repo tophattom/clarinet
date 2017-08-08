@@ -57,5 +57,32 @@ module Clarinet
       results.flatten
     end
 
+    def delete_concepts(concepts)
+      concepts = [concepts] unless concepts.is_a? Array
+      update 'remove', { concepts: concepts }
+    end
+
+    def merge_concepts(concepts)
+      concepts = [concepts] unless concepts.is_a? Array
+      update 'merge', { concepts: concepts }
+    end
+
+    def overwrite_concepts(concepts)
+      concepts = [concepts] unless concepts.is_a? Array
+      update 'merge', { concepts: concepts }
+    end
+
+    private
+
+      def update(action, obj)
+        model_data = obj.merge id: @id
+        data = {
+          models: [Clarinet::Utils.format_model(model_data)]
+        }
+
+        response_data = @app.client.models_update data
+        Clarinet::Model.new @app, response_data['models'].first
+      end
+
   end
 end

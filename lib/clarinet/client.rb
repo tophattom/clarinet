@@ -37,6 +37,12 @@ module Clarinet
       end
     end
 
+    def models_update(data)
+      with_response_parsing do
+        self.class.patch '/models', headers: @auth_headers, body: data.to_json
+      end
+    end
+
     def outputs(model_id, inputs)
       body = { inputs: inputs }
 
@@ -70,12 +76,6 @@ module Clarinet
 
       with_response_parsing do
         self.class.post '/concepts', headers: @auth_headers, body: body.to_json
-      end
-    end
-
-    def input_update(data)
-      with_response_parsing do
-        self.class.patch '/inputs', headers: @auth_headers, body: data.to_json
       end
     end
 
