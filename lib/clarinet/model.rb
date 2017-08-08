@@ -72,6 +72,11 @@ module Clarinet
       update 'merge', { concepts: concepts }
     end
 
+    def train
+      response_data = @app.client.model_train @id
+      Clarinet::Model.new @app, response_data['model']
+    end
+
     private
 
       def update(action, obj)

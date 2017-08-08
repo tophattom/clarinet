@@ -29,6 +29,12 @@ module Clarinet
       end
     end
 
+    def model_train(id)
+      with_response_parsing do
+        self.class.post "/models/#{id}/versions", header: @auth_headers
+      end
+    end
+
     def models_search(query)
       body = { model_query: query }
 
