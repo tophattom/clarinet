@@ -57,6 +57,10 @@ module Clarinet
       results.flatten
     end
 
+    def versions(options = { page: 1, per_page: 20 })
+      @app.client.model_versions @id, options
+    end
+
     def delete_concepts(concepts)
       concepts = [concepts] unless concepts.is_a? Array
       update 'remove', { concepts: concepts }

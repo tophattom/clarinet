@@ -35,6 +35,12 @@ module Clarinet
       end
     end
 
+    def model_versions(id, options = {})
+      with_response_parsing do
+        self.class.get "/models/#{id}/versions", headers: @auth_headers, query: options
+      end
+    end
+
     def models_search(query)
       body = { model_query: query }
 
