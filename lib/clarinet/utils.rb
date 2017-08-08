@@ -55,5 +55,29 @@ module Clarinet
       concept_data
     end
 
+    def self.format_input(input_data, include_image = true)
+      input_data = { url: input_data } if input_data.is_a? String
+
+      formatted = {
+        id: input_data[:id],
+        data: {}
+      }
+
+      formatted[:data][:concepts] = input_data.concepts if input_data.key? :concepts
+      formatted[:data][:metadata] = input_data.metadata if input_data.key? :metadata
+      formatted[:data][:geo] = { geo_point: input_data.geo } if input_data.key? :geo
+
+      if include_image
+        formatted[:data][:image] = {
+          url: input_data.[:url],
+          base64: input_data.[:base64],
+          crop: input_data.[:crop],
+          allow_duplicate_url: input_data.fetch(:allow_duplicate_url, false)
+        }
+      end
+
+      formatted
+    end
+
   end
 end
