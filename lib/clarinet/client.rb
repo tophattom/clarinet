@@ -9,8 +9,6 @@ module Clarinet
     base_uri 'https://api.clarifai.com/v2'
     headers 'Content-Type' => 'application/json'
 
-    debug_output STDOUT
-
     def initialize(api_key)
       @auth_headers = {
         'Authorization' => "Key #{api_key}"
