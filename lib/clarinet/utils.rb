@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'uri'
+require 'addressable/uri'
 
 module Clarinet
   class Utils
-
-    URL_REGEX = /\A#{URI::regexp(%w(http https))}\z/
 
     def self.check_response_status(status)
       status_code = status['code']
@@ -85,14 +83,21 @@ module Clarinet
 
     def self.format_media_predict(input_data, type = :image)
       if input_data.is_a? String
-        input_data = { base64: input_data }
-        input_data = { url: input_data } if input_data =~ URL_REGEX
+        input_data = { base64: input_data } unless valid_url? input_data
+        input_data = { url: input_data } if valid_url? input_data
       end
 
       data = {}
       data[type] = input_data
       { data: data }
     end
+
+    private
+
+      def self.valid_url?(url)
+        uri = Addressable::URI.parse url
+        uri.scheme == 'http' || uri.scheme == 'https'
+      end
 
   end
 end

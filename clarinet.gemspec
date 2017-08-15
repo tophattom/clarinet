@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
 
   s.add_dependency 'httparty', ['~> 0.14.0']
+  s.add_dependency 'addressable', ['~> 2.5.0']
 
   s.add_development_dependency 'bundler', ['~> 1.12']
 end
