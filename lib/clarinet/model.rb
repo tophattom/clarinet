@@ -37,24 +37,14 @@ module Clarinet
       @model_version = raw_data['model_version'] || raw_data[:model_version]
     end
 
-    def predict(inputs)
+    def predict(inputs, config = {})
+      video = config[:video] || false
+      config.delete :video
+
       inputs = [inputs] unless inputs.is_a? Array
+      inputs = inputs.map { |input| Clarinet::Utils.format_media_predict(input) }
 
-      inputs = inputs.map do |input|
-        {
-          data: {
-            image: {
-              url: input
-            }
-          }
-        }
-      end
-
-      results = inputs.each_slice(MAX_INPUT_COUNT).map do |inputs_slice|
-        @app.client.outputs id, inputs_slice
-      end
-
-      results.flatten
+      @app.client.outputs id, inputs, config
     end
 
     def versions(options = { page: 1, per_page: 20 })

@@ -55,8 +55,9 @@ module Clarinet
       end
     end
 
-    def outputs(model_id, inputs)
+    def outputs(model_id, inputs, config = {})
       body = { inputs: inputs }
+      body[:model] = { output_info: { output_config: config } } unless config.empty?
 
       with_response_parsing do
         self.class.post "/models/#{model_id}/outputs", headers: @auth_headers, body: body.to_json
