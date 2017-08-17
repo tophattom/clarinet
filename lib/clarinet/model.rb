@@ -14,15 +14,28 @@ module Clarinet
 
     MAX_INPUT_COUNT = 128
 
+    # @return [Hash] Raw API data used to construct this instance
     attr_reader :raw_data
 
+    # @return [String] Model id
     attr_reader :id
+
+    # @return [String] Model name
     attr_reader :name
+
+    # @return [String] Created at timestamp
     attr_reader :created_at
+
+    # @return [String]
     attr_reader :app_id
+
+    # @return [Hash]
     attr_reader :output_info
+
+    # @return [String]
     attr_reader :model_version
 
+    # @!visibility private
     def initialize(app, raw_data)
       @app = app
 
@@ -37,6 +50,15 @@ module Clarinet
       @model_version = raw_data[:model_version]
     end
 
+    # Returns model ouputs according to inputs
+    # @param inputs [String, Hash, Array<String>, Array<Hash>] An array of objects/object/string pointing to
+    #   an image resource. A string can either be a url or base64 image bytes. Object keys explained below:
+    # @!macro predict_inputs
+    #   @option inputs [Hash] :image Object with at least +:url+ or +:base64+ key as explained below:
+    #     * +:url+ (String) A publicly accessibly
+    #     * +:base64+ (String) Base64 string representing image bytes
+    #     * +:crop+ (Array<Float>) An array containing the percent to be cropped from top, left, bottom and right
+    # @return [Hash] API response
     def predict(inputs, config = {})
       video = config[:video] || false
       config.delete :video
@@ -47,25 +69,42 @@ module Clarinet
       @app.client.outputs id, inputs, config
     end
 
+    # Returns a list of versions of the model
+    # @param options [Hash] Listing options
+    # @option options [Int] :page (1) The page number
+    # @option options [Int] :per_page (20) Number of models to return per page
+    # @return [Hash] API response
     def versions(options = { page: 1, per_page: 20 })
       @app.client.model_versions @id, options
     end
 
+    # Remove concepts from a model
+    # @param concepts [Array<Hash>] List of concept hashes with id
+    # @return [Clarinet::Model] Model instance
     def delete_concepts(concepts)
       concepts = [concepts] unless concepts.is_a? Array
       update 'remove', { concepts: concepts }
     end
 
+    # Merge concepts to a model
+    # @param (see #delete_concepts)
+    # @return (see #delete_concepts)
     def merge_concepts(concepts)
       concepts = [concepts] unless concepts.is_a? Array
       update 'merge', { concepts: concepts }
     end
 
+    # Overwrite concepts in a model
+    # @param (see #delete_concepts)
+    # @return (see #delete_concepts)
     def overwrite_concepts(concepts)
       concepts = [concepts] unless concepts.is_a? Array
       update 'merge', { concepts: concepts }
     end
 
+    # Create a new model version
+    # @note Training takes some time and the new version will not be immediately available.
+    # @return [Clarinet::Model] Model instance
     def train
       response_data = @app.client.model_train @id
       Clarinet::Model.new @app, response_data[:model]

@@ -3,8 +3,10 @@
 require 'addressable/uri'
 
 module Clarinet
+  # @!visibility private
   class Utils
 
+    # @!visibility private
     def self.check_response_status(status)
       status_code = status[:code]
 
@@ -24,6 +26,7 @@ module Clarinet
       raise new_error
     end
 
+    # @!visibility private
     def self.format_model(model_data)
       formatted = {
         id: model_data[:id]
@@ -52,11 +55,13 @@ module Clarinet
       formatted
     end
 
+    # @!visibility private
     def self.format_concept(concept_data)
       return { id: concept_data } if concept_data.is_a? String
       concept_data
     end
 
+    # @!visibility private
     def self.format_input(input_data, include_image = true)
       input_data = { url: input_data } if input_data.is_a? String
 
@@ -81,6 +86,7 @@ module Clarinet
       formatted
     end
 
+    # @!visibility private
     def self.format_media_predict(input_data, type = :image)
       if input_data.is_a? String
         input_data = { base64: input_data } unless valid_url? input_data
