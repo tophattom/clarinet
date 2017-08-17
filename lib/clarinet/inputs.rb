@@ -21,7 +21,7 @@ module Clarinet
       inputs = inputs.map { |input| Clarinet::Utils.format_input(input) }
 
       data = @app.client.inputs_create inputs
-      Clarinet::Inputs.new data['inputs']
+      Clarinet::Inputs.new data[:inputs]
     end
 
     def delete(id)
@@ -35,12 +35,12 @@ module Clarinet
 
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.inputs options
-      Clarinet::Inputs.new @app, data['inputs']
+      Clarinet::Inputs.new @app, data[:inputs]
     end
 
     def get(id)
       data = @app.client.input id
-      Clarinet::Input.new @app, data['input']
+      Clarinet::Input.new @app, data[:input]
     end
 
     def status
@@ -71,7 +71,7 @@ module Clarinet
         }
 
         response_data = @app.client.inputs_update data
-        Clarinet::Inputs.new @app, response_data['inputs']
+        Clarinet::Inputs.new @app, response_data[:inputs]
       end
 
   end

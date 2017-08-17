@@ -14,14 +14,14 @@ module Clarinet
     def initialize(app, raw_data)
       @app = app
 
-      @id = raw_data['id'] || raw_data[:id]
-      @created_at = raw_data['created_at'] || raw_data[:created_at]
-      @image_url = raw_data['data']['image_url'] || raw_data[:data][:image_url]
+      @id = raw_data[:id]
+      @created_at = raw_data[:created_at]
+      @image_url = raw_data[:data][:image_url]
 
-      @concepts = Clarinet::Concepts.new app, raw_data['data']['concepts']
+      @concepts = Clarinet::Concepts.new app, raw_data[:data][:concepts]
 
-      @score = raw_data['score'] || raw_data[:score]
-      @metadata = raw_data['data']['metadata'] || raw_data[:data][:metadata]
+      @score = raw_data[:score]
+      @metadata = raw_data[:data][:metadata]
 
       @raw_data = raw_data
     end
@@ -56,7 +56,7 @@ module Clarinet
         }
 
         response_data = @app.client.inputs_update data
-        Clarinet::Input.new response_data['input']
+        Clarinet::Input.new response_data[:input]
       end
 
   end

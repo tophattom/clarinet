@@ -11,11 +11,11 @@ module Clarinet
     def initialize(raw_data = {})
       @raw_data = raw_data
 
-      @id = raw_data['id'] || raw_data[:id]
-      @name = raw_data['name'] || raw_data[:name]
-      @created_at = raw_data['created_at'] || raw_data[:created_at]
-      @app_id = raw_data['app_id'] || raw_data[:app_id]
-      @value = raw_data['value'] || raw_data[:value]
+      @id = raw_data[:id]
+      @name = raw_data[:name]
+      @created_at = raw_data[:created_at]
+      @app_id = raw_data[:app_id]
+      @value = raw_data[:value]
     end
 
   end

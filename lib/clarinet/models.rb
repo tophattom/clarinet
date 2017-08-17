@@ -20,15 +20,15 @@ module Clarinet
     def init_model(model)
       model_data = {}
 
-      model_data['id'] = model if model.is_a? String
+      model_data[:id] = model if model.is_a? String
       model_data = model if model.is_a? Hash
       model_data = model.raw_data if model.is_a? Clarinet::Model
 
-      return Clarinet::Model.new @app, model_data if model_data['id']
+      return Clarinet::Model.new @app, model_data if model_data[:id]
 
-      search_results = search model_data['name'], model_data['type']
+      search_results = search model_data[:name], model_data[:type]
 
-      return search_results.find { |result| result.model_version.id == model_data['version'] }.first if model_data['version']
+      return search_results.find { |result| result.model_version.id == model_data[:version] }.first if model_data[:version]
 
       search_results.first
     end
@@ -39,12 +39,12 @@ module Clarinet
 
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.models options
-      Clarinet::Models.new @app, data['models']
+      Clarinet::Models.new @app, data[:models]
     end
 
     def get(id)
       data = @app.client.model id
-      Clarinet::Model.new @app, data['model']
+      Clarinet::Model.new @app, data[:model]
     end
 
     def search(name, type = nil)
@@ -54,7 +54,7 @@ module Clarinet
       }
 
       data = @app.client.models_search query
-      Clarinet::Models.new @app, data['models']
+      Clarinet::Models.new @app, data[:models]
     end
 
   end

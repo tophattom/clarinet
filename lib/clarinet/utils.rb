@@ -6,7 +6,7 @@ module Clarinet
   class Utils
 
     def self.check_response_status(status)
-      status_code = status['code']
+      status_code = status[:code]
 
       return if status_code == Clarinet::Status::SUCCESS
 
@@ -17,10 +17,10 @@ module Clarinet
       error_class = Clarinet::InvalidRequestError if status_code == Clarinet::Status::INVALID_REQUEST
       error_class = Clarinet::ImageDecodingError if status_code == Clarinet::Status::IMAGE_DECODING_FAILED
 
-      new_error = error_class.new status['description']
+      new_error = error_class.new status[:description]
       new_error.code = status_code
-      new_error.description = status['description']
-      new_error.details = status['details']
+      new_error.description = status[:description]
+      new_error.details = status[:details]
       raise new_error
     end
 

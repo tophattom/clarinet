@@ -20,17 +20,17 @@ module Clarinet
       concepts = concepts.map { |concept| format_concept(concept) }
 
       data = @app.client.concepts.create concepts
-      Clarinet::Concepts.new @app, data['concepts']
+      Clarinet::Concepts.new @app, data[:concepts]
     end
 
     def list(options = { page: 1, per_page: 20 })
       data = @app.client.concepts options
-      Clarinet::Concepts.new @app, data['concepts']
+      Clarinet::Concepts.new @app, data[:concepts]
     end
 
     def get(id)
       data = @app.client.concept id
-      Clarinet::Concept.new data['concept']
+      Clarinet::Concept.new data[:concept]
     end
 
     def search(name, language = nil)
@@ -40,7 +40,7 @@ module Clarinet
       }
 
       data = @app.client.concepts_search query
-      Clarinet::Concepts.new @app, data['concepts']
+      Clarinet::Concepts.new @app, data[:concepts]
     end
 
   end

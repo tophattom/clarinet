@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require 'httparty'
+require 'json'
 
 module Clarinet
   class Client
     include HTTParty
 
     base_uri 'https://api.clarifai.com/v2'
+    format :plain
     headers 'Content-Type' => 'application/json'
 
     def initialize(api_key)
@@ -143,8 +145,8 @@ module Clarinet
 
       def with_response_parsing(&block)
         response = yield
-        data = response.parsed_response
-        Clarinet::Utils.check_response_status data['status']
+        data = JSON.parse response.parsed_response, symbolize_names: true
+        Clarinet::Utils.check_response_status data[:status]
         data
       end
 

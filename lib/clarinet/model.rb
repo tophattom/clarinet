@@ -28,13 +28,13 @@ module Clarinet
 
       @raw_data = raw_data
 
-      @id = raw_data['id'] || raw_data[:id]
-      @name = raw_data['name'] || raw_data[:name]
-      @created_at = raw_data['created_at'] || raw_data[:created_at]
-      @app_id = raw_data['app_id'] || raw_data[:app_id]
-      @output_info = raw_data['output_info'] || raw_data[:output_info]
+      @id = raw_data[:id]
+      @name = raw_data[:name]
+      @created_at = raw_data[:created_at]
+      @app_id = raw_data[:app_id]
+      @output_info = raw_data[:output_info]
 
-      @model_version = raw_data['model_version'] || raw_data[:model_version]
+      @model_version = raw_data[:model_version]
     end
 
     def predict(inputs, config = {})
@@ -68,7 +68,7 @@ module Clarinet
 
     def train
       response_data = @app.client.model_train @id
-      Clarinet::Model.new @app, response_data['model']
+      Clarinet::Model.new @app, response_data[:model]
     end
 
     private
@@ -80,7 +80,7 @@ module Clarinet
         }
 
         response_data = @app.client.models_update data
-        Clarinet::Model.new @app, response_data['models'].first
+        Clarinet::Model.new @app, response_data[:models].first
       end
 
   end
