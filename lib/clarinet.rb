@@ -8,8 +8,6 @@ require 'clarinet/client'
 
 require 'clarinet/concept'
 require 'clarinet/concepts'
-require 'clarinet/color'
-require 'clarinet/output'
 require 'clarinet/input'
 require 'clarinet/inputs'
 
