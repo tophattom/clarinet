@@ -42,4 +42,29 @@ describe Clarinet::Models do
     end
   end
 
+  describe '#list' do
+    it 'should return Clarinet::Models with all models' do
+      req_stub = stub_request(:get, 'https://api.clarifai.com/v2/models')
+        .with(query: { page: 1, per_page: 20 })
+        .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/models-list.txt"))
+
+      result = @models.list
+
+      expect(req_stub).to have_been_requested
+
+      expect(result).to be_instance_of(Clarinet::Models)
+      expect(result.size).to eq(15)
+    end
+
+    it 'should use pagination options in the API call' do
+      req_stub = stub_request(:get, 'https://api.clarifai.com/v2/models')
+        .with(query: { page: 2, per_page: 33 })
+        .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/models-list.txt"))
+
+      @models.list page: 2, per_page: 33
+
+      expect(req_stub).to have_been_requested
+    end
+  end
+
 end
