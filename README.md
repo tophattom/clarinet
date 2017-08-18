@@ -1,4 +1,5 @@
-# Clarinet
+Clarinet [![Build Status](https://travis-ci.org/tophattom/clarinet.svg?branch=master)](https://travis-ci.org/tophattom/clarinet)
+===
 
 Ruby client for [Clarifai](https://clarifai.com) API v2.
 
