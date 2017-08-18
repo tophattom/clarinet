@@ -6,23 +6,23 @@ module Clarinet
       attr_accessor :details
     end
 
-    class InvalidAuthTokenError < Clarinet::ApiError
+    class InvalidAuthTokenError < ApiError
 
     end
 
-    class ApiKeyNotFoundError < Clarinet::ApiError
+    class ApiKeyNotFoundError < ApiError
 
     end
 
-    class BadRequestFormatError < Clarinet::ApiError
+    class BadRequestFormatError < ApiError
 
     end
 
-    class InvalidRequestError < Clarinet::ApiError
+    class InvalidRequestError < ApiError
 
     end
 
-    class ImageDecodingError < Clarinet::ApiError
+    class ImageDecodingError < ApiError
 
     end
   end

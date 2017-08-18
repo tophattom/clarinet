@@ -18,4 +18,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'addressable', ['~> 2.5.0']
 
   s.add_development_dependency 'bundler', ['~> 1.12']
+  s.add_development_dependency 'webmock', ['~> 3.0.0']
 end

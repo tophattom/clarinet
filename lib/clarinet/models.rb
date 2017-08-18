@@ -17,7 +17,7 @@ module Clarinet
     #   @see Array#select
     # @!method select
     #   @see Array#select
-    delegate [:[], :each, :map, :find, :select, :reject] => :@models
+    delegate [:[], :each, :map, :find, :select, :reject, :size] => :@models
 
     # @return [Hash] Raw API data used to construct this instance
     attr_reader :raw_data
