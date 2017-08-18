@@ -20,7 +20,7 @@ describe Clarinet::Models do
 
       req_stub = stub_request(:post, 'https://api.clarifai.com/v2/models/searches')
         .with(body: { model_query: { name: model_name, type: model_type } })
-        .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/search-general-concept.txt"))
+        .to_return(fixture_file('search-general-concept'))
 
       result = @models.search model_name, model_type
 
@@ -33,7 +33,7 @@ describe Clarinet::Models do
 
       stub_request(:post, 'https://api.clarifai.com/v2/models/searches')
       .with(body: { model_query: { name: model_name, type: model_type } })
-      .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/search-general-concept.txt"))
+      .to_return(fixture_file('search-general-concept'))
 
       result = @models.search model_name, model_type
 
@@ -46,7 +46,7 @@ describe Clarinet::Models do
     it 'should return Clarinet::Models with all models' do
       req_stub = stub_request(:get, 'https://api.clarifai.com/v2/models')
         .with(query: { page: 1, per_page: 20 })
-        .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/models-list.txt"))
+        .to_return(fixture_file('models-list'))
 
       result = @models.list
 
@@ -59,7 +59,7 @@ describe Clarinet::Models do
     it 'should use pagination options in the API call' do
       req_stub = stub_request(:get, 'https://api.clarifai.com/v2/models')
         .with(query: { page: 2, per_page: 33 })
-        .to_return(File.new("#{File.dirname(__FILE__)}/fixtures/models-list.txt"))
+        .to_return(fixture_file('models-list'))
 
       @models.list page: 2, per_page: 33
 

@@ -102,3 +102,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def fixture_file(name)
+  File.new("#{File.dirname(__FILE__)}/fixtures/#{name}.txt")
+end
