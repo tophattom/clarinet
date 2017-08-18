@@ -4,6 +4,7 @@ require 'httparty'
 require 'json'
 
 module Clarinet
+  # @!visibility private
   class Client
     include HTTParty
 

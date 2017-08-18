@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'clarinet/status'
-require 'clarinet/error'
+require 'clarinet/error/error'
 require 'clarinet/utils'
 
 require 'clarinet/client'

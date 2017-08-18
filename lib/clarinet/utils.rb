@@ -6,18 +6,17 @@ module Clarinet
   # @!visibility private
   class Utils
 
-    # @!visibility private
     def self.check_response_status(status)
       status_code = status[:code]
 
       return if status_code == Clarinet::Status::SUCCESS
 
-      error_class = Clarinet::ApiError
-      error_class = Clarinet::InvalidAuthTokenError if status_code == Clarinet::Status::INVALID_AUTH_TOKEN
-      error_class = Clarinet::ApiKeyNotFoundError if status_code == Clarinet::Status::API_KEY_NOT_FOUND
-      error_class = Clarinet::BadRequestFormatError if status_code == Clarinet::Status::BAD_REQUEST_FORMAT
-      error_class = Clarinet::InvalidRequestError if status_code == Clarinet::Status::INVALID_REQUEST
-      error_class = Clarinet::ImageDecodingError if status_code == Clarinet::Status::IMAGE_DECODING_FAILED
+      error_class = Clarinet::Error::ApiError
+      error_class = Clarinet::Error::InvalidAuthTokenError if status_code == Clarinet::Status::INVALID_AUTH_TOKEN
+      error_class = Clarinet::Error::ApiKeyNotFoundError if status_code == Clarinet::Status::API_KEY_NOT_FOUND
+      error_class = Clarinet::Error::BadRequestFormatError if status_code == Clarinet::Status::BAD_REQUEST_FORMAT
+      error_class = Clarinet::Error::InvalidRequestError if status_code == Clarinet::Status::INVALID_REQUEST
+      error_class = Clarinet::Error::ImageDecodingError if status_code == Clarinet::Status::IMAGE_DECODING_FAILED
 
       new_error = error_class.new status[:description]
       new_error.code = status_code
@@ -26,7 +25,6 @@ module Clarinet
       raise new_error
     end
 
-    # @!visibility private
     def self.format_model(model_data)
       formatted = {
         id: model_data[:id]
@@ -55,13 +53,11 @@ module Clarinet
       formatted
     end
 
-    # @!visibility private
     def self.format_concept(concept_data)
       return { id: concept_data } if concept_data.is_a? String
       concept_data
     end
 
-    # @!visibility private
     def self.format_input(input_data, include_image = true)
       input_data = { url: input_data } if input_data.is_a? String
 
@@ -86,7 +82,6 @@ module Clarinet
       formatted
     end
 
-    # @!visibility private
     def self.format_media_predict(input_data, type = :image)
       if input_data.is_a? String
         input_data = { base64: input_data } unless valid_url? input_data
@@ -98,12 +93,10 @@ module Clarinet
       { data: data }
     end
 
-    private
-
-      def self.valid_url?(url)
-        uri = Addressable::URI.parse url
-        uri.scheme == 'http' || uri.scheme == 'https'
-      end
+    private_class_method def self.valid_url?(url)
+      uri = Addressable::URI.parse url
+      uri.scheme == 'http' || uri.scheme == 'https'
+    end
 
   end
 end
