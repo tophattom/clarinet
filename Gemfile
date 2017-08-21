@@ -15,5 +15,6 @@ end
 group :test do
   gem 'mocha', '1.2.1'
   gem 'rspec', '3.6.0'
+  gem 'simplecov', '0.15.0', require: false
   gem 'webmock', '3.0.1'
 end
