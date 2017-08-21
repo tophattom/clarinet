@@ -10,6 +10,22 @@ describe Clarinet::Models do
       model = @models.init_model Clarinet::Model::GENERAL
       expect(model).to be_instance_of(Clarinet::Model)
       expect(model.id).to eq(Clarinet::Model::GENERAL)
+
+      model = @models.init_model id: Clarinet::Model::GENERAL
+      expect(model).to be_instance_of(Clarinet::Model)
+      expect(model.id).to eq(Clarinet::Model::GENERAL)
+    end
+
+    it 'should call #search if given name' do
+      model_data = { name: 'general-v1.3' }
+
+      stub_request(:post, 'https://api.clarifai.com/v2/models/searches')
+        .to_return(fixture_file('search-general-concept'))
+
+      search_results = @models.search 'general-v1.3', nil
+      @models.expects(:search).with('general-v1.3', nil).returns(search_results)
+
+      @models.init_model model_data
     end
   end
 
@@ -32,8 +48,8 @@ describe Clarinet::Models do
       model_type = 'concept'
 
       stub_request(:post, 'https://api.clarifai.com/v2/models/searches')
-      .with(body: { model_query: { name: model_name, type: model_type } })
-      .to_return(fixture_file('search-general-concept'))
+        .with(body: { model_query: { name: model_name, type: model_type } })
+        .to_return(fixture_file('search-general-concept'))
 
       result = @models.search model_name, model_type
 
@@ -64,6 +80,26 @@ describe Clarinet::Models do
       @models.list page: 2, per_page: 33
 
       expect(req_stub).to have_been_requested
+    end
+  end
+
+  describe '#get' do
+    it 'should call correct API endpoint and return Clarinet::Model instance' do
+      req_stub = stub_request(:get, "https://api.clarifai.com/v2/models/#{Clarinet::Model::GENERAL}")
+        .to_return(fixture_file('models-get'))
+
+      result = @models.get Clarinet::Model::GENERAL
+
+      expect(req_stub).to have_been_requested
+      expect(result).to be_instance_of(Clarinet::Model)
+    end
+  end
+
+  describe '#predict' do
+    it 'should call #predict on Clarinet::Model instance' do
+      Clarinet::Model.any_instance.expects(:predict).with('fake_image_url')
+
+      @models.predict Clarinet::Model::GENERAL, 'fake_image_url'
     end
   end
 

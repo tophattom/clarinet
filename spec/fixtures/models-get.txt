@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Headers: Content-Type,Accept,X-Requested-With,Content-Type,Accept-Encoding,X-CSRF-Token,Authorization,X-Clarifai-Application-Id,X-Clarifai-REST-API-Key,X-Clarifai-Session-Token,X-Clarifai-Client,X-Clarifai-Site
+Access-Control-Allow-Methods: GET,HEAD,POST,PUT,PATCH,OPTIONS,DELETE
+Access-Control-Allow-Origin: *
+Content-Type: application/json; charset=UTF-8
+Date: Mon, 21 Aug 2017 06:41:24 GMT
+Server: nginx
+Content-Length: 520
+Connection: keep-alive
+
+{"status":{"code":10000,"description":"Ok"},"model":{"id":"aaa03c23b3724a16a56b629203edc62c","name":"general-v1.3","created_at":"2016-03-09T17:11:39.608845Z","app_id":"main","output_info":{"message":"Show output_info with: GET /models/{model_id}/output_info","type":"concept","type_ext":"concept"},"model_version":{"id":"aa9ca48295b37401f8af92ad1af0d91d","created_at":"2016-07-13T01:19:12.147644Z","status":{"code":21100,"description":"Model trained successfully"},"active_concept_count":9171},"display_name":"General"}}
