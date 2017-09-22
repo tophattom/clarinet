@@ -50,6 +50,13 @@ module Clarinet
       @model_version = raw_data[:model_version]
     end
 
+    # Returns all the model's output info
+    # @return [Clarinet::Model] Model instance with complete output_info data
+    def output_info
+      response_data = @app.client.model_output_info @id
+      Clarinet::Model.new @app, response_data[:model]
+    end
+
     # Returns model ouputs according to inputs
     # @param inputs [String, Hash, Array<String>, Array<Hash>] An array of objects/object/string pointing to
     #   an image resource. A string can either be a url or base64 image bytes. Object keys explained below:

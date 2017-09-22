@@ -30,6 +30,12 @@ module Clarinet
       end
     end
 
+    def model_output_info(id)
+      with_response_parsing do
+        self.class.get "/models/#{id}/output_info", headers: @auth_headers
+      end
+    end
+
     def model_train(id)
       with_response_parsing do
         self.class.post "/models/#{id}/versions", header: @auth_headers
