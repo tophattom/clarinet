@@ -52,7 +52,7 @@ module Clarinet
 
     # Returns all the model's output info
     # @return [Clarinet::Model] Model instance with complete output_info data
-    def output_info
+    def get_output_info
       response_data = @app.client.model_output_info @id
       Clarinet::Model.new @app, response_data[:model]
     end
